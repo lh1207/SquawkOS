@@ -1,0 +1,27 @@
+{
+  "name": "template",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "open index.html",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "postinstall": "node .scripts/badge.js"
+  },
+  "author": "Yahya Gilany <gilanyym@ucmail.uc.edu>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@testing-library/jest-dom": "^5.8.0",
+    "@types/jest": "^25.2.3",
+    "babel-jest": "^26.0.1",
+    "babel-plugin-rewire": "^1.2.0",
+    "directory-tree": "^2.2.4",
+    "eslint": "^7.0.0",
+    "jest": "^26.0.1",
+    "line-replace": "^2.0.1",
+    "lodash": "^4.17.15",
+    "rewire": "^5.0.0",
+    "simple-git": "^2.5.0"
+  }
+}

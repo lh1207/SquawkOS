@@ -1,0 +1,23 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true,
+    "source.fixAll.stylelint": true,
+    "source.fixAll.eslint": true,
+    "source.fixAll.prettier": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/docs": true
+  },
+  "jest.jestCommandLine": "__tests__",
+  "jest.rootPath": "__tests__"
+}
