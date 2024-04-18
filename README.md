@@ -18,6 +18,8 @@ The following technologies, tools, Web APIs, Web Servers will be used to satisfy
 
 # How to Play
 
+Visit: https://lh1207.github.io/SquawkOS/
+
 Players will navigate through menus and screens that are reminiscent of Windows, but with a unique avian twist. In the Floppy Bird mini-game, players will control a bird and attempt to navigate through obstacles by flapping their wings. The card matching game is a simple game where players will flip over cards to reveal matching pairs.
 
 # Contributions
