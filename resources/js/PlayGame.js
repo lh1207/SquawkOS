@@ -22,7 +22,6 @@ class PlayGame extends Phaser.Scene {
     this.load.image('taskbar', 'resources/assets/images/taskbar.png')
     this.load.image('startButton', 'resources/assets/images/startButton.png')
     this.load.image('startButtonPressed', 'resources/assets/images/startButtonPressed.png')
-    this.load.image('startMenu', 'resources/assets/images/startMenu.png')
     this.load.image('shutdown', 'resources/assets/icons/shutdown.png')
     this.load.audio('startup', 'resources/assets/sounds/startup.mp3')
     this.load.audio('squawk', 'resources/assets/sounds/squawk.ogg')
