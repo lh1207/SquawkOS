@@ -23,8 +23,9 @@ class PlayGame extends Phaser.Scene {
     this.load.image('startButton', 'resources/assets/images/startButton.png')
     this.load.image('startButtonPressed', 'resources/assets/images/startButtonPressed.png')
     this.load.image('shutdown', 'resources/assets/icons/shutdown.png')
-    this.load.audio('startup', 'resources/assets/sounds/startup.mp3')
+    this.load.audio('startup', 'resources/assets/sounds/startup-chime.mp3')
     this.load.audio('squawk', 'resources/assets/sounds/squawk.ogg')
+    this.load.audio('shutdown', 'resources/assets/sounds/shutdown.mp3')
   }
 
   /**
