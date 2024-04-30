@@ -1,4 +1,9 @@
+:root {
+    --bs-gradient: linear-gradient(to right, #007bff, #6610f2);
+}
+
 body {
+    background: var(--bs-gradient);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,6 +12,7 @@ body {
     position: relative;
 }
 
+/* ... rest of your CSS ... */
 canvas {
     display: block;
     background-color: #000;
@@ -16,9 +22,9 @@ canvas {
 }
 
 .monitor {
-    width: 860px;
-    height: 660px;
-    border: 30px solid grey;
+    width: 800px;
+    height: 600px;
+    border: 45px solid grey;
     position: absolute;
     top: 50%;
     left: 50%;
