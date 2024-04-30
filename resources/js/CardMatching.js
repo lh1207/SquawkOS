@@ -1,17 +1,56 @@
+/**
+ * Width of the window for cards.
+ * @type {number}
+ */
 const windowWidthCards = 560;
+
+/**
+ * Height of the window for cards.
+ * @type {number}
+ */
 const windowHeightCards = 320;
+
+/**
+ * Array to store all cards.
+ * @type {Array}
+ */
 var allCards = [];
+
+/**
+ * First selected card.
+ * @type {Object}
+ */
 var cardOne;
+
+/**
+ * Second selected card.
+ * @type {Object}
+ */
 var cardTwo;
+
+/**
+ * Number of matches made.
+ * @type {number}
+ */
 var matches = 0;
 
+/**
+ * Class representing a card matching game.
+ * @extends Phaser.Scene
+ */
 class CardMatching extends Phaser.Scene {
+  /**
+   * Create a CardMatching.
+   */
   constructor() {
     super('cards');
     this.cardFlipped = false;
     this.xText = null;
   }
 
+  /**
+   * Preload the images for the game.
+   */
   preload() {
     this.load.image("cardBack", "resources/assets/images/cardBack.png");
     this.load.image("sparrow", "resources/assets/images/sparrow.png");
@@ -20,13 +59,14 @@ class CardMatching extends Phaser.Scene {
     this.load.image("owl", "resources/assets/images/owl.png");
   }
 
+  /**
+   * Create the game scene, shuffle and create the cards.
+   */
   create() {
     this.cameras.main.setViewport((game.config.width - windowWidthCards) / 2, (game.config.height - windowHeightCards) / 2, windowWidthCards, windowHeightCards);
-    // Shuffle the cards
     var cardImages = ["sparrow", "eagle", "penguin", "owl"];
     cardImages = Phaser.Utils.Array.Shuffle(cardImages.concat(cardImages));
 
-    // Create the cards
     const cardWidth = 120;
     const cardHeight = 150;
     const xSpacing = 10;
@@ -42,7 +82,6 @@ class CardMatching extends Phaser.Scene {
       }
     }
 
-    // Add event listener for card click
     allCards.forEach((card) => {
       card.on("pointerdown", () => {
         this.flipCard(card);
@@ -50,6 +89,10 @@ class CardMatching extends Phaser.Scene {
     });
   }
 
+  /**
+   * Flip the card and check for a match if two cards are flipped.
+   * @param {Object} card - The card to flip.
+   */
   flipCard(card) {
     card.setTexture(card.name);
 
@@ -63,21 +106,20 @@ class CardMatching extends Phaser.Scene {
     this.checkMatch();
   }
 
+  /**
+   * Check if the two selected cards match.
+   */
   checkMatch() {
     if (!cardOne || !cardTwo) {
-      // Not enough cards flipped yet, do nothing
       return;
     }
 
-    // Disable interactivity of all cards
     allCards.forEach((card) => {
       card.disableInteractive();
     });
 
     if (cardOne.name === cardTwo.name) {
-      // Cards match
       matches++;
-      console.log(matches);
       if (matches === 4) {
         const winnerText = this.add.text(windowWidthCards / 2, windowHeightCards / 2, "Congratulations! You matched all the cards.", { font: "bold 24px Arial", fill: "#000" }).setOrigin(0.5, 0.5);
         setTimeout(() => {
@@ -86,25 +128,20 @@ class CardMatching extends Phaser.Scene {
           matches = 0;
         }, 3000);
       }
-      // Reset state
       cardOne = null;
       cardTwo = null;
     } else {
-      // Cards don't match
-      // Show X and flip cards back after a delay
       const xText = this.add.text(cardTwo.x, cardTwo.y, "X", { font: "bold 48px Arial", fill: "#000" });
       xText.setOrigin(0.5, 0.5);
       setTimeout(() => {
         xText.destroy();
         cardOne.setTexture("cardBack");
         cardTwo.setTexture("cardBack");
-        // Reset state
         cardOne = null;
         cardTwo = null;
       }, 1000);
     }
 
-    // Re-enable interactivity of all cards
     setTimeout(() => {
       allCards.forEach((card) => {
         card.setInteractive();
@@ -114,6 +151,9 @@ class CardMatching extends Phaser.Scene {
     this.cardFlipped = false;
   }
 
+  /**
+   * Restart the game.
+   */
   restart() {
     this.scene.restart('cards')
   }
