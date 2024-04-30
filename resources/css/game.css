@@ -1,15 +1,39 @@
-/* body and canvas classes to center game */
-
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    position: relative;
 }
 
 canvas {
     display: block;
     background-color: #000;
     border: 1px solid #000;
+    position: relative;
+    z-index: 1;
+}
+
+.monitor {
+    width: 860px;
+    height: 660px;
+    border: 30px solid grey;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    background: transparent;
+    z-index: 2;
+}
+
+.monitor:after {
+    content: "";
+    position: absolute;
+    bottom: -10%;
+    left: 45%;
+    width: 10%;
+    height: 10%;
+    background: grey;
 }

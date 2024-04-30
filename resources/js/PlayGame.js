@@ -1,8 +1,18 @@
+/**
+ * This class represents the PlayGame scene in the game.
+ * @extends Phaser.Scene
+ */
 class PlayGame extends Phaser.Scene {
+  /**
+   * The constructor for the PlayGame class.
+   */
   constructor() {
     super("playGame");
   }
 
+  /**
+   * Preload function to load the game assets.
+   */
   preload() {
     // Load icon images
     this.load.image('x', 'resources/assets/icons/x.png')
@@ -12,12 +22,14 @@ class PlayGame extends Phaser.Scene {
     this.load.image('taskbar', 'resources/assets/images/taskbar.png')
     this.load.image('startButton', 'resources/assets/images/startButton.png')
     this.load.image('startButtonPressed', 'resources/assets/images/startButtonPressed.png')
-    this.load.image('startMenu', 'resources/assets/images/startMenu.png')
     this.load.image('shutdown', 'resources/assets/icons/shutdown.png')
     this.load.audio('startup', 'resources/assets/sounds/startup.mp3')
     this.load.audio('squawk', 'resources/assets/sounds/squawk.ogg')
   }
 
+  /**
+   * Create function to create the game objects.
+   */
   create() {
     this.sound.play('startup');
 
@@ -91,7 +103,6 @@ class PlayGame extends Phaser.Scene {
           singleClicked = false;
           icon.clearTint();
           const gameKey = this.texture.key; // scene id in all scene js file must console.log below for their respective icons.
-          //console.log(gameKey);
           const gameName = gameKey.charAt(0).toUpperCase() + gameKey.slice(1); // gameKey but UPPERCASE
           const windowWidth = 600;
           const windowHeight = 400;

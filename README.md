@@ -40,7 +40,7 @@ Contributions are welcome via [LICENSE](https://github.com/lh1207/SquawkOS/blob/
   - https://www.apachefriends.org/index.html
 - Any web server that supports your environment and has PHP/Apache support.
 
-1. CD into root of web server
+2. CD into root of web server
 - WAMP.NET (Windows)
 ```powershell
   cd C:\wamp\www
@@ -52,17 +52,17 @@ Contributions are welcome via [LICENSE](https://github.com/lh1207/SquawkOS/blob/
 cd /opt/lampp/etc/httpd
 ```
 
-1. Clone repository
+3. Clone repository
 ```bash
 git clone https://www.github.com/lh1207/SquawkOS.git
 ```
 
-1. CD into repository
+4. CD into repository
 ```bash
 cd ./SquawkOS.git
 ```
 
-1. Install dependencies
+5. Install dependencies
 - nodeJS version: v20.12.2 (64-bit)
 - RECOMMENDED: Use Node Version Manager to install 
 ```bash
@@ -74,7 +74,7 @@ nvm use 20.12.2 lts
 npm i
 ```
 
-1. Access project through web server by going to localhost or 127.0.0.1
+6. Access project through web server by going to localhost or 127.0.0.1
 
 # Questions and Inquires
-To contact me, please open an repository issue
+To contact me, please open a repository issue
