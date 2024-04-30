@@ -24,46 +24,54 @@ Players will navigate through menus and screens that are reminiscent of Windows,
 
 # How to Contribute
 
-Contributions are welcome! Please feel free to create a feature branch and pull request.
+Contributions are welcome via [LICENSE](https://github.com/lh1207/SquawkOS/blob/main/LICENSE)! Please feel free to create a feature branch and pull request.
 
-How to contribute
+## Instructions
 
 1. Install web server
 - WAMP.NET (Windows)
-    - wampserver.com
+    - https://wampserver.aviatechno.net/
 - MAMP (macOS)
-  - -mamp.info
+  - https://mamp.info
 - XAMPP (Linux, Windows, macOS)
   - https://www.apachefriends.org/index.html
 - Any web server that supports your environment and has PHP/Apache support.
 
-2. CD into root of web server
+1. CD into root of web server
 - WAMP.NET (Windows)
-  - ```cd C:\wamp\www``` 
+```powershell
+  cd C:\wamp\www
+``` 
 - MAMP (macOS)
-  - By default, PHP and HTML Pages should be stored inside the MAMP /Applications/MAMP/htdocs folder. This folder is called "Document Root". The location of the document root folder can be changed in the host settings.
+  >By default, PHP and HTML Pages should be stored inside ```Applications/MAMP/htdocs``` folder. This folder is called "Document Root". The location of the document root folder can be changed in the host settings.
 - XAMPP (Linux, Windows, macOS)
-  - ```cd /opt/lampp/etc/httpd```
+```bash
+cd /opt/lampp/etc/httpd
+```
 
-3. Clone repository
+1. Clone repository
 ```bash
 git clone https://www.github.com/lh1207/SquawkOS.git
 ```
 
-4. CD into repository
+1. CD into repository
 ```bash
 cd ./SquawkOS.git
 ```
 
-5. Install dependencies
+1. Install dependencies
 - nodeJS version: v20.12.2 (64-bit)
 - RECOMMENDED: Use Node Version Manager to install 
-- ```nvm install 20.12.2 lts```
-- ```nvm use 20.12.2 lts```
+```bash
+nvm install 20.12.2 lts
+nvm use 20.12.2 lts
+```
 - Install npm packages
-- ```npm i```
+```bash
+npm i
+```
 
-6. Access project through web server by going to localhost or 127.0.0.1
+1. Access project through web server by going to localhost or 127.0.0.1
 
 # Questions and Inquires
 To contact me, please open an repository issue
