@@ -31,14 +31,14 @@ Contributions are welcome via [LICENSE](https://github.com/lh1207/SquawkOS/blob/
 
 ## Instructions
 
-1. Install web server
+1. Install an Apache web server
 - WAMP.NET (Windows)
     - https://wampserver.aviatechno.net/
 - MAMP (macOS)
   - https://mamp.info
 - XAMPP (Linux, Windows, macOS)
   - https://www.apachefriends.org/index.html
-- Any web server that supports your environment and has PHP/Apache support.
+- Any web server that supports your environment and has Apache support.
 
 2. CD into root of web server
 - WAMP.NET (Windows)
@@ -52,12 +52,12 @@ Contributions are welcome via [LICENSE](https://github.com/lh1207/SquawkOS/blob/
 cd /opt/lampp/etc/httpd
 ```
 
-3. Clone repository
+3. Clone repository in respected directory
 ```bash
 git clone https://www.github.com/lh1207/SquawkOS.git
 ```
 
-4. CD into repository
+4. CD into repository from directory
 ```bash
 cd ./SquawkOS.git
 ```
