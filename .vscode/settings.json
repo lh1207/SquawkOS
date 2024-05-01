@@ -19,8 +19,5 @@
     "**/docs": true
   },
   "jest.jestCommandLine": "__tests__",
-  "jest.rootPath": "__tests__",
-  "cSpell.words": [
-    "pointerupoutside"
-  ]
+  "jest.rootPath": "__tests__"
 }
