@@ -1,14 +1,16 @@
 /**
+ * Entry point for the game.
  * This class represents the boot sequence for Windows Squawk.
  * Once the system gets through the login screen, the player will be transferred to Scene2.
  * @extends Phaser.Scene
  */
-class BootGame extends Phaser.Scene {
+
+class Index extends Phaser.Scene {
   /**
-   * The constructor for the BootGame class.
+   * The constructor for the Index class.
    */
   constructor() {
-    super({ key: "bootGame" });
+    super({ key: "Index" });
   }
 
   /**

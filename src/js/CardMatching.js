@@ -52,11 +52,11 @@ class CardMatching extends Phaser.Scene {
    * Preload the images for the game.
    */
   preload() {
-    this.load.image("cardBack", "resources/assets/images/cardBack.png");
-    this.load.image("sparrow", "resources/assets/images/sparrow.png");
-    this.load.image("eagle", "resources/assets/images/eagle.png");
-    this.load.image("penguin", "resources/assets/images/penguin.png");
-    this.load.image("owl", "resources/assets/images/owl.png");
+    this.load.image("cardBack", "src/assets/images/cardBack.png");
+    this.load.image("sparrow", "src/assets/images/sparrow.png");
+    this.load.image("eagle", "src/assets/images/eagle.png");
+    this.load.image("penguin", "src/assets/images/penguin.png");
+    this.load.image("owl", "src/assets/images/owl.png");
   }
 
   /**

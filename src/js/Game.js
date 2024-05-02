@@ -5,7 +5,7 @@
  * @property {number} width - The width of the game canvas.
  * @property {number} height - The height of the game canvas.
  * @property {string} backgroundColor - The background color of the game canvas.
- * @property {Array} scene - The array of game scenes. Includes BootGame, PlayGame, FloppyBird, Paint, CardMatching scenes.
+ * @property {Array} scene - The array of game scenes. Includes Index, PlayGame, FloppyBird, Paint, CardMatching scenes.
  * @property {Object} physics - The physics configuration for the game.
  * @property {string} physics.default - The default physics system (arcade physics).
  * @property {Object} physics.arcade - The configuration for the arcade physics system.
@@ -24,7 +24,7 @@ var config = {
   width: 800,
   height: 600,
   backgroundColor: '#0078D7',
-  scene: [BootGame, PlayGame, FloppyBird, Paint, CardMatching],
+  scene: [Index, PlayGame, FloppyBird, Paint, CardMatching],
   physics: {
     default: 'arcade',
     arcade: {

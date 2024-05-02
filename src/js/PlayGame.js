@@ -15,17 +15,17 @@ class PlayGame extends Phaser.Scene {
    */
   preload() {
     // Load icon images
-    this.load.image('x', 'resources/assets/icons/x.png')
-    this.load.image('floppy', 'resources/assets/icons/floppy.png');
-    this.load.image('paint', 'resources/assets/icons/paint.png');
-    this.load.image('cards', 'resources/assets/icons/cards.png');
-    this.load.image('taskbar', 'resources/assets/images/taskbar.png')
-    this.load.image('startButton', 'resources/assets/images/startButton.png')
-    this.load.image('startButtonPressed', 'resources/assets/images/startButtonPressed.png')
-    this.load.image('shutdown', 'resources/assets/icons/shutdown.png')
-    this.load.audio('startup', 'resources/assets/sounds/startup-chime.mp3')
-    this.load.audio('squawk', 'resources/assets/sounds/squawk.ogg')
-    this.load.audio('shutdown', 'resources/assets/sounds/shutdown.mp3')
+    this.load.image('x', 'src/assets/icons/x.png')
+    this.load.image('floppy', 'src/assets/icons/floppy.png');
+    this.load.image('paint', 'src/assets/icons/paint.png');
+    this.load.image('cards', 'src/assets/icons/cards.png');
+    this.load.image('taskbar', 'src/assets/images/taskbar.png')
+    this.load.image('startButton', 'src/assets/images/startButton.png')
+    this.load.image('startButtonPressed', 'src/assets/images/startButtonPressed.png')
+    this.load.image('shutdown', 'src/assets/icons/shutdown.png')
+    this.load.audio('startup', 'src/assets/sounds/startup-chime.mp3')
+    this.load.audio('squawk', 'src/assets/sounds/squawk.ogg')
+    this.load.audio('shutdown', 'src/assets/sounds/shutdown.mp3')
   }
 
   /**
@@ -136,7 +136,7 @@ class PlayGame extends Phaser.Scene {
         } else {
           singleClicked = true;
           icon.setTint(0x0000ff);
-          // EventListner for resetting icon tint
+          // EventListener for resetting icon tint
           document.addEventListener('click', function (event) {
             // Check if event happened outside of tinted icon
             if (!icon.getBounds().contains(event.clientX, event.clientY)) {
