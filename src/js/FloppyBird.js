@@ -39,8 +39,8 @@ class FloppyBird extends Phaser.Scene {
    * Preload the game assets.
    */
   preload() {
-    this.load.image('bird', 'resources/assets/images/bird.png');
-    this.load.image('pipe', 'resources/assets/images/pipe.png');
+    this.load.image('bird', 'src/assets/images/bird.png');
+    this.load.image('pipe', 'src/assets/images/pipe.png');
   }
 
   /**

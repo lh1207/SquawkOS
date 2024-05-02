@@ -24,6 +24,13 @@
       "es6": true,
       "jest": true,
       "browser": true
-    }
+    },
+    "overrides": [
+      {
+        "files": ["tests/**/*"],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   }
-  
