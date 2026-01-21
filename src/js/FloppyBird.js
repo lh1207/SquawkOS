@@ -1,135 +1,140 @@
-/**
- * The width of the game window.
- * @type {number}
- */
 const windowWidth = 560;
-
-/**
- * The height of the game window.
- * @type {number}
- */
 const windowHeight = 320;
 
-/**
- * The game options for the Floppy Bird game.
- * @type {Object}
- */
 var gameOptions = {
   birdGravity: 800,
-  birdSpeed: 10,
+  pipeSpeed: 200,
   birdFlapPower: 300,
-  minPipeHeight: 50,
-  pipeDistance: [400, 280],
-  pipeHole: [75, 100],
+  pipeDistance: [220, 280],
+  pipeHole: [100, 130],
 };
 
-/**
- * The Floppy Bird game class.
- * @extends Phaser.Scene
- */
 class FloppyBird extends Phaser.Scene {
-  /**
-   * The constructor for the Floppy Bird game class.
-   */
   constructor() {
     super('floppy');
   }
 
-  /**
-   * Preload the game assets.
-   */
   preload() {
     this.load.image('bird', 'src/assets/images/bird.png');
     this.load.image('pipe', 'src/assets/images/pipe.png');
   }
 
-  /**
-   * Create the game scene.
-   */
   create() {
-    this.cameras.main.setViewport((game.config.width - windowWidth) / 2, (game.config.height - windowHeight) / 2, windowWidth, windowHeight);
+    // Calculate viewport offset to center the game window
+    this.viewportX = (game.config.width - windowWidth) / 2;
+    this.viewportY = (game.config.height - windowHeight) / 2;
+
+    this.cameras.main.setViewport(this.viewportX, this.viewportY, windowWidth, windowHeight);
+
+    // The viewport shows world coords from viewportY to viewportY + windowHeight
+    // We want the bird centered in the viewport
+    const worldCenterY = this.viewportY + windowHeight / 2;
+
     this.pipeGroup = this.physics.add.group();
     this.pipePool = [];
-    for (let i = 0; i < 64; i++) {
-      this.pipeGroup.y = -50;
-      this.pipePool.push(this.pipeGroup.create(0, 0, 'pipe'));
-      this.pipePool.push(this.pipeGroup.create(0, 0, 'pipe'));
-      this.placePipes(false);
+
+    // Create initial pipe pool (enough for recycling)
+    for (let i = 0; i < 8; i++) {
+      let pipe = this.pipeGroup.create(-100, -100, 'pipe');
+      pipe.body.allowGravity = false;
+      pipe.body.immovable = true;
+      this.pipePool.push(pipe);
     }
-    this.pipeGroup.setVelocityX(-gameOptions.birdSpeed);
-    this.bird = this.physics.add.sprite(80, game.config.height / 2, 'bird');
+
+    // Place initial pipes
+    this.nextPipeX = windowWidth + this.viewportX;
+    this.placePipes();
+    this.placePipes();
+
+    // Create bird at left side of viewport, vertically centered
+    this.bird = this.physics.add.sprite(this.viewportX + 80, worldCenterY, 'bird');
     this.bird.body.gravity.y = gameOptions.birdGravity;
+    this.bird.setCollideWorldBounds(false);
+
+    // Flap on space
     this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).on('down', this.flap, this);
+
+    // Collision with pipes
+    this.physics.add.collider(this.bird, this.pipeGroup, this.die, null, this);
   }
 
-  /**
-   * Place the pipes in the game scene.
-   */
   placePipes() {
-    let rightmost = this.getRightmostPipe();
+    if (this.pipePool.length < 2) return;
+
     let pipeHoleHeight = Phaser.Math.Between(gameOptions.pipeHole[0], gameOptions.pipeHole[1]);
-    let pipeHolePosition = game.config.height / 2;
+
+    // Random hole position within the visible viewport area (with padding)
+    const padding = 50;
+    const minY = this.viewportY + padding + pipeHoleHeight / 2;
+    const maxY = this.viewportY + windowHeight - padding - pipeHoleHeight / 2;
+    let pipeHolePosition = Phaser.Math.Between(minY, maxY);
+
     let pipeTop = this.pipePool.pop();
-    pipeTop.x = rightmost + pipeTop.getBounds().width + Phaser.Math.Between(gameOptions.pipeDistance[0], gameOptions.pipeDistance[1]);
+
+    // Top pipe: bottom edge at top of hole
+    pipeTop.x = this.nextPipeX;
     pipeTop.y = pipeHolePosition - pipeHoleHeight / 2;
     pipeTop.setOrigin(0, 1);
+    pipeTop.body.velocity.x = -gameOptions.pipeSpeed;
+    pipeTop.setActive(true);
+    pipeTop.setVisible(true);
+
+    // Bottom pipe: top edge at bottom of hole
     let pipeBottom = this.pipePool.pop();
-    pipeBottom.x = pipeTop.x;
+    pipeBottom.x = this.nextPipeX;
     pipeBottom.y = pipeHolePosition + pipeHoleHeight / 2;
     pipeBottom.setOrigin(0, 0);
-    this.pipeGroup.addMultiple([pipeTop, pipeBottom]);
+    pipeBottom.body.velocity.x = -gameOptions.pipeSpeed;
+    pipeBottom.setActive(true);
+    pipeBottom.setVisible(true);
+
+    // Schedule next pipe
+    this.nextPipeX += Phaser.Math.Between(gameOptions.pipeDistance[0], gameOptions.pipeDistance[1]);
   }
 
-  /**
-   * Make the bird flap its wings.
-   */
   flap() {
     this.bird.body.velocity.y = -gameOptions.birdFlapPower;
   }
 
-  /**
-   * Update the game scene.
-   */
   update() {
-    this.physics.world.collide(this.bird, this.pipeGroup, function () {
-      this.die();
-    }, null, this);
+    // Check if bird is outside viewport bounds
+    const topBound = this.viewportY;
+    const bottomBound = this.viewportY + windowHeight;
 
-    if (this.bird.y > game.config.height || this.bird.y < 0) {
+    if (this.bird.y < topBound || this.bird.y > bottomBound) {
       this.die();
+      return;
     }
 
-    this.pipeGroup.getChildren().forEach(function (pipe) {
-      pipe.body.immovable = true;
-      pipe.x -= 2;
-      pipe.setVelocityY(-gameOptions.birdSpeed, 0, 0);
-
-      if (pipe.getBounds().right < 0) {
+    // Recycle pipes that have gone off screen
+    this.pipeGroup.getChildren().forEach((pipe) => {
+      if (pipe.active && pipe.x + pipe.width < this.viewportX) {
+        pipe.body.velocity.x = 0;
+        pipe.setActive(false);
+        pipe.setVisible(false);
+        pipe.x = -100;
         this.pipePool.push(pipe);
-
-        if (this.pipePool.length == 2) {
-          this.placePipes(true);
-        }
       }
-    }, this);
-  }
-
-  /**
-   * Get the rightmost pipe in the game scene.
-   * @return {number} The x-coordinate of the rightmost pipe.
-   */
-  getRightmostPipe() {
-    let rightmostPipe = 0;
-    this.pipeGroup.getChildren().forEach(function (pipe) {
-      rightmostPipe = Math.max(rightmostPipe, pipe.x);
     });
-    return rightmostPipe;
+
+    // Spawn new pipes when needed
+    const rightmostPipe = this.getRightmostPipe();
+    if (rightmostPipe < this.viewportX + windowWidth + 100) {
+      this.placePipes();
+    }
   }
 
-  /**
-   * End the game.
-   */
+  getRightmostPipe() {
+    let rightmost = 0;
+    this.pipeGroup.getChildren().forEach((pipe) => {
+      if (pipe.active) {
+        rightmost = Math.max(rightmost, pipe.x);
+      }
+    });
+    return rightmost;
+  }
+
   die() {
-    this.scene.start('floppy');
+    this.scene.restart();
   }
 }
