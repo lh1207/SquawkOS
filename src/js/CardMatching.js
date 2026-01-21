@@ -1,56 +1,11 @@
-/**
- * Width of the window for cards.
- * @type {number}
- */
 const windowWidthCards = 560;
-
-/**
- * Height of the window for cards.
- * @type {number}
- */
 const windowHeightCards = 320;
 
-/**
- * Array to store all cards.
- * @type {Array}
- */
-var allCards = [];
-
-/**
- * First selected card.
- * @type {Object}
- */
-var cardOne;
-
-/**
- * Second selected card.
- * @type {Object}
- */
-var cardTwo;
-
-/**
- * Number of matches made.
- * @type {number}
- */
-var matches = 0;
-
-/**
- * Class representing a card matching game.
- * @extends Phaser.Scene
- */
 class CardMatching extends Phaser.Scene {
-  /**
-   * Create a CardMatching.
-   */
   constructor() {
     super('cards');
-    this.cardFlipped = false;
-    this.xText = null;
   }
 
-  /**
-   * Preload the images for the game.
-   */
   preload() {
     this.load.image("cardBack", "src/assets/images/cardBack.png");
     this.load.image("sparrow", "src/assets/images/sparrow.png");
@@ -59,11 +14,21 @@ class CardMatching extends Phaser.Scene {
     this.load.image("owl", "src/assets/images/owl.png");
   }
 
-  /**
-   * Create the game scene, shuffle and create the cards.
-   */
   create() {
-    this.cameras.main.setViewport((game.config.width - windowWidthCards) / 2, (game.config.height - windowHeightCards) / 2, windowWidthCards, windowHeightCards);
+    // Reset all state on scene create
+    this.allCards = [];
+    this.cardOne = null;
+    this.cardTwo = null;
+    this.matches = 0;
+    this.canFlip = true;
+
+    this.cameras.main.setViewport(
+      (game.config.width - windowWidthCards) / 2,
+      (game.config.height - windowHeightCards) / 2,
+      windowWidthCards,
+      windowHeightCards
+    );
+
     var cardImages = ["sparrow", "eagle", "penguin", "owl"];
     cardImages = Phaser.Utils.Array.Shuffle(cardImages.concat(cardImages));
 
@@ -76,85 +41,86 @@ class CardMatching extends Phaser.Scene {
 
     for (var i = 0; i < 4; i++) {
       for (var j = 0; j < 2; j++) {
-        var card = this.add.sprite(xOffset + i * (cardWidth + xSpacing), yOffset + j * (cardHeight + ySpacing), "cardBack").setInteractive();
+        var card = this.add.sprite(
+          xOffset + i * (cardWidth + xSpacing),
+          yOffset + j * (cardHeight + ySpacing),
+          "cardBack"
+        ).setInteractive();
         card.name = cardImages[i * 2 + j];
-        allCards.push(card);
+        card.matched = false;
+        this.allCards.push(card);
+
+        card.on("pointerdown", () => {
+          this.flipCard(card);
+        });
       }
     }
-
-    allCards.forEach((card) => {
-      card.on("pointerdown", () => {
-        this.flipCard(card);
-      });
-    });
   }
 
-  /**
-   * Flip the card and check for a match if two cards are flipped.
-   * @param {Object} card - The card to flip.
-   */
   flipCard(card) {
+    // Ignore clicks if we're waiting for a mismatch to flip back
+    if (!this.canFlip) return;
+
+    // Ignore clicks on already matched or already flipped cards
+    if (card.matched) return;
+    if (card === this.cardOne) return;
+
     card.setTexture(card.name);
 
-    if (!this.cardFlipped) {
-      this.cardFlipped = true;
-      cardOne = card;
+    if (!this.cardOne) {
+      this.cardOne = card;
       return;
     }
 
-    cardTwo = card;
+    this.cardTwo = card;
     this.checkMatch();
   }
 
-  /**
-   * Check if the two selected cards match.
-   */
   checkMatch() {
-    if (!cardOne || !cardTwo) {
-      return;
-    }
+    this.canFlip = false;
 
-    allCards.forEach((card) => {
-      card.disableInteractive();
-    });
+    if (this.cardOne.name === this.cardTwo.name) {
+      // Cards match - mark them as matched
+      this.cardOne.matched = true;
+      this.cardTwo.matched = true;
+      this.cardOne.disableInteractive();
+      this.cardTwo.disableInteractive();
 
-    if (cardOne.name === cardTwo.name) {
-      matches++;
-      if (matches === 4) {
-        const winnerText = this.add.text(windowWidthCards / 2, windowHeightCards / 2, "Congratulations! You matched all the cards.", { font: "bold 24px Arial", fill: "#000" }).setOrigin(0.5, 0.5);
-        setTimeout(() => {
+      this.matches++;
+      this.cardOne = null;
+      this.cardTwo = null;
+      this.canFlip = true;
+
+      if (this.matches === 4) {
+        const winnerText = this.add.text(
+          windowWidthCards / 2,
+          windowHeightCards / 2,
+          "Congratulations!",
+          { font: "bold 24px Arial", fill: "#000" }
+        ).setOrigin(0.5, 0.5);
+
+        this.time.delayedCall(3000, () => {
           winnerText.destroy();
-          this.restart();
-          matches = 0;
-        }, 3000);
+          this.scene.restart();
+        });
       }
-      cardOne = null;
-      cardTwo = null;
     } else {
-      const xText = this.add.text(cardTwo.x, cardTwo.y, "X", { font: "bold 48px Arial", fill: "#000" });
-      xText.setOrigin(0.5, 0.5);
-      setTimeout(() => {
+      // Cards don't match - show X and flip back
+      const xText = this.add.text(
+        this.cardTwo.x,
+        this.cardTwo.y,
+        "X",
+        { font: "bold 48px Arial", fill: "#f00" }
+      ).setOrigin(0.5, 0.5);
+
+      this.time.delayedCall(1000, () => {
         xText.destroy();
-        cardOne.setTexture("cardBack");
-        cardTwo.setTexture("cardBack");
-        cardOne = null;
-        cardTwo = null;
-      }, 1000);
-    }
-
-    setTimeout(() => {
-      allCards.forEach((card) => {
-        card.setInteractive();
+        this.cardOne.setTexture("cardBack");
+        this.cardTwo.setTexture("cardBack");
+        this.cardOne = null;
+        this.cardTwo = null;
+        this.canFlip = true;
       });
-    }, 1000);
-
-    this.cardFlipped = false;
-  }
-
-  /**
-   * Restart the game.
-   */
-  restart() {
-    this.scene.restart('cards')
+    }
   }
 }
