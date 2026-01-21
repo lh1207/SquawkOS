@@ -1,13 +1,4 @@
-/**
- * Paint class extends Phaser.Scene to create a paint application scene.
- * @class
- * @extends Phaser.Scene
- */
 class Paint extends Phaser.Scene {
-  /**
-   * Constructor for Paint class.
-   * @constructor
-   */
   constructor() {
     super({ key: "paint" });
     this.brushSize = 10;
@@ -15,9 +6,6 @@ class Paint extends Phaser.Scene {
     this.isDrawing = false;
   }
 
-  /**
-   * Create function to initialize the paint application scene.
-   */
   create() {
     // Create the canvas
     const rectWidth = 560;
@@ -73,9 +61,6 @@ class Paint extends Phaser.Scene {
       0xFFFFFF, // white (eraser)
     ];
 
-    /**
-     * Loop to create color swatches.
-     */
     for (let i = 0; i < colors.length; i++) {
       const swatchX = swatchXStart + (i % swatchesPerRow) * (swatchWidth + swatchPadding);
       const swatchY = swatchYStart + Math.floor(i / swatchesPerRow) * (swatchHeight + swatchPadding);
@@ -105,9 +90,6 @@ class Paint extends Phaser.Scene {
     const brushButtonWidth = 50;
     const brushSizes = [5, 10, 20];
 
-    /**
-     * Loop to create brush size buttons.
-     */
     for (let i = 0; i < brushSizes.length; i++) {
       const brushSize = brushSizes[i];
       const brushButtonX = brushButtonXStart + i * (brushButtonWidth + brushButtonPadding);
@@ -121,9 +103,6 @@ class Paint extends Phaser.Scene {
         this.brushSize = brushSize;
         brushButton.setStrokeStyle(2, 0x000000);
 
-        /**
-         * Loop to reset the stroke style of other buttons when a button is clicked.
-         */
         for (let j = 0; j < brushSizes.length; j++) {
           if (j !== i) {
             const otherButton = this.children.list.find(child => child instanceof Phaser.GameObjects.Rectangle && child !== brushButton && child.x === brushButtonXStart + j * (brushButtonWidth + brushButtonPadding) && child.y === brushButtonYStart);
@@ -136,12 +115,6 @@ class Paint extends Phaser.Scene {
     }
   }
 
-  /**
-   * drawBrush function to draw on the canvas.
-   * @param {number} x - The x-coordinate of the pointer.
-   * @param {number} y - The y-coordinate of the pointer.
-   * @param {Phaser.GameObjects.Graphics} canvasGraphic - The canvas graphic to draw on.
-   */
   drawBrush(x, y, canvasGraphic) {
     canvasGraphic.lineStyle(this.brushSize, this.currentColor, 1);
 

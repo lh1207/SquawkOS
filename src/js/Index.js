@@ -1,32 +1,12 @@
-/**
- * Entry point for the game.
- * This class represents the boot sequence for Windows Squawk.
- * Once the system gets through the login screen, the player will be transferred to Scene2.
- * @extends Phaser.Scene
- */
-
 class Index extends Phaser.Scene {
-  /**
-   * The constructor for the Index class.
-   */
   constructor() {
     super({ key: "Index" });
   }
 
-  /**
-   * Preload function to load the game assets.
-   */
   preload() {
-    // Load the game assets here
   }
 
-  /**
-   * Create function to create the game objects.
-   */
   create() {
-    // Create the game objects here
-
-    // Change the background color from base blue to black
     this.cameras.main.setBackgroundColor('#000000');
 
     // Create BIOS and BOOT text, boot timer below, text in advanceBootSequence()
@@ -55,16 +35,9 @@ class Index extends Phaser.Scene {
     this.bootSequence = 0;
   }
 
-  /**
-   * Update function to update the game objects.
-   */
   update() {
-    // update the game objects here
   }
 
-  /**
-   * Advance the boot sequence and update the text.
-   */
   advanceBootSequence() {
     switch (this.bootSequence) {
       case 0:
@@ -102,17 +75,11 @@ class Index extends Phaser.Scene {
     this.bootSequence++;
   }
 
-  /**
-   * Show the splash screen.
-   */
   showSplashScreen() {
     this.splashScreen.setText('Starting Windows...')
     this.trademark.setText('Windows Squawk®')
   }
 
-  /**
-   * Show the login screen.
-   */
   showLoginScreen() {
     this.splashScreen.setText('')
     this.loginText.setText('Welcome!')

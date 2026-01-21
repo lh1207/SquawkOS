@@ -1,18 +1,8 @@
-/**
- * This class represents the PlayGame scene in the game.
- * @extends Phaser.Scene
- */
 class PlayGame extends Phaser.Scene {
-  /**
-   * The constructor for the PlayGame class.
-   */
   constructor() {
     super("playGame");
   }
 
-  /**
-   * Preload function to load the game assets.
-   */
   preload() {
     // Load icon images
     this.load.image('x', 'src/assets/icons/x.png')
@@ -28,9 +18,6 @@ class PlayGame extends Phaser.Scene {
     this.load.audio('shutdown', 'src/assets/sounds/shutdown.mp3')
   }
 
-  /**
-   * Create function to create the game objects.
-   */
   create() {
     this.sound.play('startup');
 
@@ -103,8 +90,8 @@ class PlayGame extends Phaser.Scene {
         if (singleClicked) {
           singleClicked = false;
           icon.clearTint();
-          const gameKey = this.texture.key; // scene id in all scene js file must console.log below for their respective icons.
-          const gameName = gameKey.charAt(0).toUpperCase() + gameKey.slice(1); // gameKey but UPPERCASE
+          const gameKey = this.texture.key;
+          const gameName = gameKey.charAt(0).toUpperCase() + gameKey.slice(1);
           const windowWidth = 600;
           const windowHeight = 400;
           const centerX = self.cameras.main.centerX;
